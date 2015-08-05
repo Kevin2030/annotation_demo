@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1993-2015 Kingdee Inc.All Rights Reserved.
  * 
- * FileName：OurUtil.java
+ * FileName：Test.java
  * 
  * Description：TODO
  * 
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @version 1.0
  * @see
  */
-public class OurUtil {
+public class Test {
 
 	public static void main(String[] args) {
 		System.out.println("Testing...");
