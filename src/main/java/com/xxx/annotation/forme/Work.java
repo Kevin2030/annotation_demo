@@ -34,8 +34,8 @@ public @interface Work {
 
 	String[] tags() default "";
 
-	String createdBy() default "Mkyong";
+	String createdBy() default "Just For Fun";
 
-	String lastModified() default "03/01/2014";
+	String lastModified() default "08/08/2015";
 
 }
