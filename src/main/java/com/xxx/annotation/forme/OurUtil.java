@@ -12,6 +12,7 @@
 package com.xxx.annotation.forme;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * 
@@ -22,7 +23,48 @@ import java.lang.reflect.Field;
 public class OurUtil {
 
 	public static void main(String[] args) {
-		Field[] fields = KaiZhao.class.getDeclaredFields();
+		System.out.println("Testing...");
+		int passed = 0, failed = 0, count = 0, ignore = 0;
+		Class<KaiZhao> obj = KaiZhao.class;
+		if (obj.isAnnotationPresent(Work.class)) {
+			Work work = obj.getAnnotation(Work.class);
+			System.out.printf("%nPriority :%s", work.priority());
+			System.out.printf("%nCreatedBy :%s", work.createdBy());
+			System.out.printf("%nTags :");
+			int targetLenth = work.tags().length;
+			for (String tag : work.tags()) {
+				if (targetLenth > 1) {
+					System.out.print(tag + ", ");
+				} else {
+					System.out.print(tag);
+				}
+				targetLenth--;
+			}
+			System.out.printf("%nLastModified :%s%n%n", work.lastModified());
+		}
+
+		Method[] methods = obj.getDeclaredMethods();
+		for (Method method : methods) {
+			if (method.isAnnotationPresent(IsWork.class)) {
+				IsWork isWork = method.getAnnotation(IsWork.class);
+				if (isWork.enabled()) {
+					try {
+						method.invoke(obj.newInstance());
+						System.out.printf("%s - Test '%s' - passed %n", ++count, method.getName());
+						passed++;
+					} catch (Exception e) {
+						System.out.printf("%s - Test '%s' - failed: %s %n", ++count, method.getName(), e.getCause());
+						failed++;
+					}
+				} else {
+					System.out.printf("%s - Test '%s' - ignored%n", ++count, method.getName());
+					ignore++;
+				}
+			}
+		}
+		System.out.printf("%nResult : Total : %d, Passed: %d, Failed %d, Ignore %d%n", count, passed, failed, ignore);
+
+		Field[] fields = obj.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Id.class)) {
 				int id = field.getAnnotation(Id.class).id();
@@ -34,5 +76,4 @@ public class OurUtil {
 			}
 		}
 	}
-
 }

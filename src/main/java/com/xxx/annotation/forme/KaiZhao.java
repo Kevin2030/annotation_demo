@@ -11,12 +11,15 @@
  */
 package com.xxx.annotation.forme;
 
+import com.xxx.annotation.forme.Work.Priority;
+
 /**
  * 
  * @author Kai.Zhao
  * @version 1.0
  * @see
  */
+@Work(priority = Priority.HIGH, createdBy = "xxx.com", tags = { "sales", "ok" })
 public class KaiZhao {
 
 	@Id(id = 123)
@@ -24,6 +27,22 @@ public class KaiZhao {
 
 	@Name(name = "KaiZhao")
 	private String name;
+
+	@IsWork
+	public void workA() {
+		throw new RuntimeException("This test always failed");
+	}
+
+	@IsWork(enabled = false)
+	public void workB() {
+		throw new RuntimeException("This test always passed");
+	}
+
+	@IsWork(enabled = true)
+	public void workC() {
+		if (10 > 1) {
+		}
+	}
 
 	public int getId() {
 		return id;
